@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/widgets/casting_cards.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({Key? key}) : super(key: key);
@@ -8,9 +9,18 @@ class DetailsScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          _CustomAppBar(),
+          const _CustomAppBar(),
           SliverList(
-            delegate: SliverChildListDelegate([_PosterAndTitle()]),
+            delegate: SliverChildListDelegate([
+              const _PosterAndTitle(),
+              const _Overview(),
+              const _Overview(),
+              const _Overview(),
+              const _Overview(),
+              const _Overview(),
+              const _Overview(),
+              const CastingCards(),
+            ]),
           )
         ],
       ),
@@ -31,18 +41,19 @@ class _CustomAppBar extends StatelessWidget {
       floating: false,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: EdgeInsets.all(0),
+        titlePadding: const EdgeInsets.all(0),
         centerTitle: true,
         title: Container(
           color: Colors.black12,
           width: double.infinity,
           alignment: Alignment.bottomCenter,
-          child: Text(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: const Text(
             'movie.title',
             style: TextStyle(fontSize: 16),
           ),
         ),
-        background: FadeInImage(
+        background: const FadeInImage(
           placeholder: AssetImage('assets/loading.gif'),
           image: AssetImage('assets/no-image.jpg'),
           fit: BoxFit.cover,
@@ -59,12 +70,12 @@ class _PosterAndTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Container(
-      margin: EdgeInsets.only(top: 20),
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: FadeInImage(
+          child: const FadeInImage(
             placeholder: AssetImage('assets/no-image.jpg'),
             image: NetworkImage(
               'https://via.placeholder.com/200x300',
@@ -72,7 +83,7 @@ class _PosterAndTitle extends StatelessWidget {
             height: 150,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 20,
         ),
         Column(
@@ -91,12 +102,12 @@ class _PosterAndTitle extends StatelessWidget {
             ),
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.star_outline,
                   size: 15,
                   color: Colors.grey,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Text(
@@ -108,6 +119,22 @@ class _PosterAndTitle extends StatelessWidget {
           ],
         )
       ]),
+    );
+  }
+}
+
+class _Overview extends StatelessWidget {
+  const _Overview({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      child: Text(
+        'Pariatur nostrud ipsum aliqua ut pariatur in ad magna nisi ad. Voluptate tempor ullamco in amet et amet voluptate exercitation cupidatat sunt ipsum amet do laborum. Irure non elit irure mollit consequat eu eiusmod commodo culpa ex. Ut fugiat ut deserunt ex exercitation id magna Lorem. Laboris eu exercitation est non do.',
+        style: Theme.of(context).textTheme.subtitle1,
+        textAlign: TextAlign.justify,
+      ),
     );
   }
 }
