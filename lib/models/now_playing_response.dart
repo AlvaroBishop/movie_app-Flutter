@@ -1,14 +1,13 @@
 // To parse this JSON data, do
 //
-//     final reqRespListado = reqRespListadoFromMap(jsonString);
+//     final nowPlayingResponse = nowPlayingResponseFromMap(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'movie.dart';
 
-class ReqRespListado {
-  ReqRespListado({
+class NowPlayingResponse {
+  NowPlayingResponse({
     required this.dates,
     required this.page,
     required this.results,
@@ -22,10 +21,11 @@ class ReqRespListado {
   int totalPages;
   int totalResults;
 
-  factory ReqRespListado.fromJson(String str) =>
-      ReqRespListado.fromMap(json.decode(str));
+  factory NowPlayingResponse.fromJson(String str) =>
+      NowPlayingResponse.fromMap(json.decode(str));
 
-  factory ReqRespListado.fromMap(Map<String, dynamic> json) => ReqRespListado(
+  factory NowPlayingResponse.fromMap(Map<String, dynamic> json) =>
+      NowPlayingResponse(
         dates: Dates.fromMap(json["dates"]),
         page: json["page"],
         results: List<Movie>.from(json["results"].map((x) => Movie.fromMap(x))),
