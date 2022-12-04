@@ -13,24 +13,23 @@ class MovieSlider extends StatefulWidget {
 
 class _MovieSliderState extends State<MovieSlider> {
 
-  final ScrollController scrollController = new ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() { // cuando se crea
-    // TODO: implement initState
     super.initState();
 
     scrollController.addListener(() {
 
-      if( scrollController.position.pixels  >= scrollController.position.maxScrollExtent - 500)
+      if( scrollController.position.pixels  >= scrollController.position.maxScrollExtent - 500) {
         widget.onNextPage();
+      }
       
     });
   }
 
   @override
   void dispose() { // cuando se destruye
-    // TODO implement dispose
 
 
     super.dispose();
@@ -38,6 +37,7 @@ class _MovieSliderState extends State<MovieSlider> {
   @override
   Widget build(BuildContext context) {
 
+    // ignore: sized_box_for_whitespace
     return Container(
       width: double.infinity,
       height: 260,
@@ -47,10 +47,10 @@ class _MovieSliderState extends State<MovieSlider> {
 
           if (widget.title != null) 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 widget.title!,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
             
@@ -86,11 +86,11 @@ class _MoviePoster extends StatelessWidget {
       child: Column(children: [
         GestureDetector(
           onTap: () => Navigator.pushNamed(context, 'details',
-              arguments: 'movie-instance'),
+              arguments: movie),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
-              placeholder: AssetImage('assets/no-image.jpg'),
+              placeholder: const AssetImage('assets/no-image.jpg'),
               image: NetworkImage(movie.fullPosterImg),
               width: 130,
               height: 190,
