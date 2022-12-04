@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:movie_app/models/now_playing_response.dart';
+import 'package:movie_app/models/popular_response.dart';
 
 import '../models/movie.dart';
 
@@ -13,25 +14,44 @@ class MoviesProvider extends ChangeNotifier {
   String _language = 'en-US';
 
   List<Movie> onDisplayMovies = [];
+  List<Movie> popularMovies = [];
+
+  int _popularPage = 0;
 
   MoviesProvider() {
-    print('MoviesProvider inicializando');
 
     this.getOnDisplayMovies();
+    this.getPopularMovies();
   }
 
-  getOnDisplayMovies() async {
-    var url = Uri.https(_baseUrl, '3/movie/now_playing', {
+  Future<String> _getJsonData( String endpoint, [ int page = 1] ) async{
+    var url = Uri.https(_baseUrl, '3/movie/$endpoint', {
       'api_key': _apiKey,
       'language': _language,
-      'page': '1',
+      'page': '$page',
     });
 
     final response = await http.get(url);
-    final nowPlayingResponse = NowPlayingResponse.fromJson(response.body);
+    return response.body;
+
+  }
+
+  getOnDisplayMovies() async {
+    final jsonData = await this._getJsonData('3/movie/now_playing');
+    final nowPlayingResponse = NowPlayingResponse.fromJson(jsonData);
 
     onDisplayMovies = nowPlayingResponse.results;
 
     notifyListeners(); // le dice a los widgets que estan escuchando que se redibujen
+  }
+
+  getPopularMovies() async {
+    _popularPage ++;
+    final jsonData = await this._getJsonData('3/movie/popular', _popularPage);
+    final popularResponse = PopularResponse.fromJson(jsonData);
+
+    popularMovies = [...popularMovies, ...popularResponse.results];
+
+    notifyListeners();
   }
 }
