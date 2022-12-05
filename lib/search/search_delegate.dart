@@ -1,6 +1,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:movie_app/provider/movies_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../models/models.dart';
 
 class MovieSearchDelegate extends SearchDelegate {
 
@@ -25,6 +29,12 @@ class MovieSearchDelegate extends SearchDelegate {
     return Text('buildResults');
   }
 
+  Widget _emptyContainer() {
+    return Container(
+      child: Center(child: Icon( Icons.movie_creation_outlined, color: Colors.black38, size: 130,)),
+    );
+  }
+
   @override
   Widget buildSuggestions(BuildContext context) {
     if( query.isEmpty ) {
@@ -34,7 +44,43 @@ class MovieSearchDelegate extends SearchDelegate {
         size: 130,
       ));
     }
-    return Text('buildSuggestions');
+
+    final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
+    return FutureBuilder(
+      builder: (_, AsyncSnapshot<List<Movie>> snapshot) {
+        if( !snapshot.hasData ) return _emptyContainer();
+
+        final movies = snapshot.data!;
+        return ListView.builder(itemBuilder: (context, index) =>  _MovieItem( movies[index] ), itemCount: movies.length,);
+      },
+      future: moviesProvider.searchMovies(query),
+
+    );
   }
 
+}
+
+class _MovieItem extends StatelessWidget {
+  final Movie movie;
+
+  const _MovieItem( this.movie) ;
+
+  
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: FadeInImage(
+        placeholder: AssetImage('assets/no-image.jpg'), 
+        image: NetworkImage( movie.fullPosterImg),
+        width: 50,
+        fit: BoxFit.contain,
+      ),
+      title: Text( movie.title ),
+      subtitle: Text( movie.originalTitle),
+      onTap: () {
+        Navigator.pushNamed(context, 'details', arguments: movie);
+      },
+    );
+  }
+  
 }
