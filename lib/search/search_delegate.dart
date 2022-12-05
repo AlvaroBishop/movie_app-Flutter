@@ -46,14 +46,16 @@ class MovieSearchDelegate extends SearchDelegate {
     }
 
     final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
-    return FutureBuilder(
+    moviesProvider.getSuggestionsByQuery( query);
+    
+    return StreamBuilder(
       builder: (_, AsyncSnapshot<List<Movie>> snapshot) {
         if( !snapshot.hasData ) return _emptyContainer();
 
         final movies = snapshot.data!;
         return ListView.builder(itemBuilder: (context, index) =>  _MovieItem( movies[index] ), itemCount: movies.length,);
       },
-      future: moviesProvider.searchMovies(query),
+      stream: moviesProvider.suggestionStream,
 
     );
   }
