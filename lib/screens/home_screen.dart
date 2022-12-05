@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Películas en cines'),
         actions: [
           IconButton(onPressed: () => showSearch(context: context, delegate: MovieSearchDelegate()),// delegate es un widget o clase que tiene ciertas condiciones
-           icon: const Icon(Icons.search_rounded))
+          icon: const Icon(Icons.search_rounded))
         ],
       ),
       body: SingleChildScrollView(
